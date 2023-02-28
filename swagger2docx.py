@@ -176,13 +176,20 @@ obj_font = obj_charstyle.font
 obj_font.size = Pt(10)
 obj_font.name = 'Consolas'
 
+first_header = []
 for path in path_dict:
 
     print('path:', path)
     methods = path_dict[path].keys()
     for method in methods:
-        print(' method:', method)
         resource = path_dict[path][method]
+        first_tag = resource['tags'][0]
+        if first_tag not in first_header:
+            document.add_heading(first_tag, level=1)
+            first_header.append(first_tag)
+            print(' tag:', first_tag)
+
+        print(' method:', method)
         print('  ', resource['summary'])
         print('    ', resource['description'])
 
