@@ -7,11 +7,11 @@ from docx.enum.style import WD_STYLE_TYPE
 from docx.oxml.shared import qn
 from docx.oxml.xmlchemy import OxmlElement
 
-obj = json.load(open('swagger.json'))
+obj = json.load(open('swagger.json', encoding='utf-8'))
 
 document = Document()
 
-defs_dict = obj['definitions']
+defs_dict = obj.get('definitions', {})
 defs = defs_dict.keys()
 
 path_dict = obj['paths']
@@ -280,7 +280,7 @@ for path in path_dict:
                             row_cells[3].text = param['type'] + ' ({})'.format(param['format'])
                             
                     elif 'schema' in param:
-                        obj = param['schema']['$ref'].split('/')[-1]
+                        obj = param['schema']['$ref'].split('/')[-1] if '$ref' in param['schema'] else None
                         row_cells[3].text = '{} [object]'.format(obj)
                         is_schema = True
                         is_array = False
